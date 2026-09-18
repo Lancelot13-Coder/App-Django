@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block titulo %}Datos del microservicio{% endblock %}
+{% block encabezado %}Datos desde el microservicio externo{% endblock %}
+
+{% block contenido %}
+    <p>
+        Esta página no consulta la base de datos local (SQLite) de
+        3D-Organ-Inc. En vez de eso, le pide los datos a este microservicio:
+        <br><code>{{ url_microservicio }}</code>
+    </p>
+
+    {% if error %}
+        <div class="caja" style="border-color:#c0392b; color:#c0392b;">
+            <strong>No se pudo obtener información del microservicio.</strong>
+            <p>Detalle técnico: {{ error }}</p>
+            <p>
+                Esto es normal si todavía no has desplegado tu microservicio,
+                o si la URL en <code>MICROSERVICIO_URL</code>
+                (archivo <code>config/settings.py</code>) sigue siendo la de
+                EJEMPLO. Actualízala cuando tengas la URL real de Render,
+                Railway o tu función de Netlify.
+            </p>
+        </div>
+    {% elif datos %}
+        <div class="caja">
+            <strong>Respuesta recibida:</strong>
+            <pre>{{ datos }}</pre>
+        </div>
+        <!--
+            EJEMPLO: cuando definas la forma real del JSON que devuelve
+            tu microservicio, reemplaza el <pre>{{ datos }}</pre> de arriba
+            por algo como:
+
+            <ul>
+                {% for item in datos %}
+                    <li>{{ item.nombre }} - {{ item.valor }}</li>
+                {% endfor %}
+            </ul>
+        -->
+    {% else %}
+        <p>El microservicio respondió, pero sin datos para mostrar.</p>
+    {% endif %}
+{% endblock %}
